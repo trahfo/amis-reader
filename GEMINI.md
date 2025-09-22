@@ -1,11 +1,13 @@
 # Project Overview
 
+This Amis Reader is designed to read data from a local installation of the IoT device "Amis Leser" (also known as "AMIS Lesekopf"), an open-source, cloud-free IR reader for NetzOÖ Smartmeter Siemens TD-3511/TD-3512. For more information about the hardware and its REST API, see the official project: https://www.mitterbaur.at/amis-leser.html
+
 This project consists of two Ruby scripts that work together to read data from a specific URL, process it, and append it to a CSV file.
 
-*   `src/amis_reader.rb`: This script contains the core logic for fetching JSON data from `http://10.0.0.99/rest`, transforming it, and writing it to a date-stamped CSV file (e.g., `amis_reader_2025-09-21.csv`).
+*   `src/amis_reader.rb`: This script contains the core logic for fetching JSON data from a local Amis Leser (AMIS Lesekopf) device via its REST API endpoint (e.g., `http://10.0.0.99/rest`), transforming it, and writing it to a date-stamped CSV file (e.g., `amis_reader_2025-09-21.csv`).
 *   `src/amis_scheduler.rb`: This script uses the `rufus-scheduler` gem to execute the `AmisReader` script every second.
 
-The data being read appears to be related to energy consumption, with fields for "Bezogen" (received) and "Eingespeist" (fed in).
+The data being read appears to be related to energy consumption, with fields for "Bezogen" (received) and "Eingespeist" (fed in), as provided by the Amis Leser device.
 
 # Building and Running
 
