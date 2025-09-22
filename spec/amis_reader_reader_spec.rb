@@ -1,7 +1,8 @@
 require_relative 'spec_helper'
+require_relative '../src/amis_reader'
 
-describe AmisReaderReader do
-  let(:reader) { AmisReaderReader.new }
+describe AmisReader do
+  let(:reader) { AmisReader.new }
   let(:url) { 'http://example.com' }
   let(:json_response) do
     '{ "time": 1678886400, "1.8.0": 12345.6, "2.8.0": 6789.0 }'

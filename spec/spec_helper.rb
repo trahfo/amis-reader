@@ -1,2 +1,2 @@
 require 'rspec'
-require_relative '../amis_reader_reader'
+require_relative '../src/amis_reader'

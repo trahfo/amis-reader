@@ -6,8 +6,8 @@ This project provides a set of Ruby scripts to read data from an AMIS (Advanced 
 
 The project consists of two main components:
 
-*   `amis_reader_reader.rb`: A script that fetches JSON data from a smart meter at a specified URL (`http://10.0.0.99/rest` by default). It then transforms the data and appends it to a daily CSV file (e.g., `amis_reader_2025-09-21.csv`).
-*   `amis_reader_scheduler.rb`: A script that uses the `rufus-scheduler` gem to run the `amis_reader_reader.rb` script at a regular interval (every second by default).
+*   `src/amis_reader.rb`: A script that fetches JSON data from a smart meter at a specified URL (`http://10.0.0.99/rest` by default). It then transforms the data and appends it to a daily CSV file (e.g., `amis_reader_2025-09-21.csv`).
+*   `src/amis_scheduler.rb`: A script that uses the `rufus-scheduler` gem to run the `amis_reader.rb` script at a regular interval (every second by default).
 
 ## Requirements
 
@@ -34,7 +34,7 @@ The project consists of two main components:
 To start the data collection process, run the scheduler:
 
 ```bash
-bundle exec ruby amis_reader_scheduler.rb
+bundle exec ruby src/amis_scheduler.rb
 ```
 
 This will start a background process that reads data from the smart meter every second and saves it to a new CSV file each day.
@@ -49,4 +49,4 @@ bundle exec rspec
 
 ## Configuration
 
-The URL of the smart meter can be configured by changing the `URL` constant in the `amis_reader_reader.rb` file.
+The URL of the smart meter can be configured by changing the `URL` constant in the `src/amis_reader.rb` file.

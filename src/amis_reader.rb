@@ -2,9 +2,9 @@ require 'net/http'
 require 'json'
 require 'csv'
 
-# AmisReaderReader fetches data from a specified URL,
+# AmisReader fetches data from a specified URL,
 # processes it, and appends it to a CSV file.
-class AmisReaderReader
+class AmisReader
   URL = 'http://10.0.0.99/rest'.freeze
 
   AMIS_STRUCT = {
