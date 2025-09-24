@@ -21,7 +21,7 @@ class AmisReader
     append_values_to_csv(filename, values)
   end
 
-  def fetch_json_from_url(url)
+  def fetch_json_from_url(url=URL)
     JSON.parse(Net::HTTP.get(URI(url)))
   rescue StandardError => e
     puts "Error fetching or parsing JSON: #{e.message}"
@@ -41,14 +41,15 @@ class AmisReader
   end
 
   def append_values_to_csv(file_path, values)
-    unless File.exist?(file_path)
-      CSV.open(file_path, 'w') do |csv|
-        csv << AMIS_STRUCT.keys
-      end
-    end
-    CSV.open(file_path, 'a') do |csv|
+    first_row_of_day = !File.exist?(file_path)
+
+    CSV.open(file_path, 'a', col_sep:';') do |csv|
+      # write header if it's the first row of the day
+      csv << AMIS_STRUCT.keys if first_row_of_day
+      # write the values
       csv << values
     end
+
   rescue StandardError => e
     puts "Error writing to CSV: #{e.message}"
   end
