@@ -46,28 +46,32 @@ class AmisReader
   }.freeze
 
   def run(url = URL)
-    data = fetch_json_from_url(url)
-    if data['time'] != @timestamp
-      @timestamp = data['time']
-      date = Time.at(@timestamp).utc.to_date
+    begin
+      data = fetch_json_from_url(url)
+      if data['time'] != @timestamp
+        @timestamp = data['time']
+        date = Time.at(@timestamp).utc.to_date
 
-      if date != @current_date
-        puts "Date changed from #{@current_date} to #{date}"
-        @filename = build_filename(date)
-        @current_date = date
-        write_header()
-        if Time.at(@timestamp).utc.strftime('%T') > '00:00:05'
-          @bezug0 = -1.0
-          @speisung0 = -1.0
-        else
-          @bezug0 = data[AMIS_STRUCT['Bezug']] / 1000.0
-          @speisung0 = data[AMIS_STRUCT['Speisung']] / 1000.0
+        if date != @current_date
+          puts "Date changed from #{@current_date} to #{date}"
+          @filename = build_filename(date)
+          @current_date = date
+          write_header()
+          if Time.at(@timestamp).utc.strftime('%T') > '00:00:05'
+            @bezug0 = -1.0
+            @speisung0 = -1.0
+          else
+            @bezug0 = data[AMIS_STRUCT['Bezug']] / 1000.0
+            @speisung0 = data[AMIS_STRUCT['Speisung']] / 1000.0
+          end
+          puts "New day detected. File name: #{@filename}, bezug0: #{@bezug0}, speisung0: #{@speisung0}"
         end
-        puts "New day detected. File name: #{@filename}, bezug0: #{@bezug0}, speisung0: #{@speisung0}"
-      end
 
-      values = transform_data(data)
-      append_values_to_csv(values)
+        values = transform_data(data)
+        append_values_to_csv(values)
+      end
+    rescue StandardError => e
+      puts "Error during run: #{e.message}"
     end
   end
 
@@ -114,12 +118,15 @@ class AmisReader
         print "\x07"
       end
     end
+
     if values[0] == '23:59:59'
       @bezug0 = values[1]
       @speisung0 = values[2]
     end
 
     values     # Rückgabe der Werte
+  rescue StandardError => e
+    puts "Error transforming data: #{e.message}"
   end
 
   def append_values_to_csv(values)
