@@ -109,6 +109,11 @@ class AmisReader
       print "  #{sz}"
     end
 
+    if values[5] > -250
+      if File.exist?("C:/temp/bell")
+        print "\x07"
+      end
+    end
     if values[0] == '23:59:59'
       @bezug0 = values[1]
       @speisung0 = values[2]
