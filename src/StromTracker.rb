@@ -8,8 +8,12 @@ begin
   amis = AmisReader.new
 
   while (!File.exist?("C:\\temp\\end"))
-    amis.run
-    sleep 0.5
+    begin
+      amis.run
+      sleep 0.5
+    rescue StandardError => e
+      puts "Error in main loop: #{e.message}"
+    end
   end
 
   puts "DONE"
@@ -17,4 +21,6 @@ begin
   File.unlink("C:/temp/end")
 rescue
   File.unlink("C:/temp/end")
+  print "finish by inputting some character(s): "
+  gets
 end
