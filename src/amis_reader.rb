@@ -125,5 +125,15 @@ class AmisReader
 
   rescue StandardError => e
     puts "Error writing to CSV: #{e.message}"
+    values = []
+    values << Time.at(@timestamp).utc.strftime('%T')
+    for i in 1..7
+      values << nil
+    end
+
+    CSV.open(@filename, 'a', col_sep:';') do |csv|
+      # write the values
+      csv << values
+    end    
   end
 end
